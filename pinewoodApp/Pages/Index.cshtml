@@ -1,0 +1,66 @@
+﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Pinewood task app</h1>
+</div>
+
+<h1>All customers</h1>
+
+<table class="table table-striped table-bordered" data-toggle="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Creation Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.allCustomers?.Any() ?? false)
+        {
+            @foreach (var customer in Model.allCustomers)
+            {
+                <tr>
+                    <td>@customer.firstName</td>
+                    <td>@customer.lastName</td>
+                    <td>@customer.email</td>
+                    <td>@customer.creationDate</td>
+                    <td>
+
+                        <a class="nav-link text-dark" asp-area="" asp-page="/EditCustomer"
+                            asp-route-id="@customer.customerId"><button class="btn btn-primary btn-sm">Edit
+                                Customer</button></a>
+                        <form asp-page-handler="delete" asp-route-id="@customer.customerId" method="post">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>No customers found.</p>
+        }
+    </tbody>
+</table>
+<h2>Create New Customer</h2>
+<form method="post" asp-page-handler="create">
+    <div class="form-group">
+        <label>First Name</label>
+        <input required="required" type="text" name="firstName">
+    </div>
+    <div class="form-group">
+        <label>Last Name</label>
+        <input required="required" type="text" name="lastName">
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input required="required" type="email" name="emailAddress">
+    </div>
+    <button type="submit" class="btn btn-primary">Create User</button>
+</form>
